@@ -6,13 +6,18 @@
 #include "lib/material.h"
 #include "float.h"
 
+using namespace std;
+
 vec3 color(const ray& r, hitable *world, int depth, materialLight& light, camera& view) {
     hit_record rec;
-    if(world->hit(r, 0.001, FLT_MAX, rec)) {
+    if(world->hit(r, 0.00000001, FLT_MAX, rec)) {
         hit_record hitted;
-        if(!world->hit(ray(rec.p, light.position-rec.p), 0.001, FLT_MAX, hitted)) {
-            return phong(light, rec, view);
+        if(world->hit(ray(rec.p, light.position-rec.p), 0.001, FLT_MAX, hitted)) {
+            vec3 unit_direction = unit_vector(r.direction());
+            float t = 0.5*(unit_direction.y()+1.0);
+            return (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
         }
+        return phong(light, rec, view);
     }
     vec3 unit_direction = unit_vector(r.direction());
     float t = 0.5*(unit_direction.y()+1.0);
@@ -28,7 +33,7 @@ int main() {
     hitable *list[4];
     list[0] = new sphere(vec3(0, 0, -1), 0.5, new material(vec3(0.8, 0.3, 0.3), 0.2, 0.5, 0.6, 1.0));
     list[1] = new sphere(vec3(0.0,-100.5,-1.0), 100, new material(vec3(0.8, 0.8, 0.0), 0.2, 0.5, 0.6, 1.0));
-    list[2] = new sphere(vec3(1,0,-1), 0.5, new material(vec3(0.8, 0.6, 0.2), 0.2, 0.5, 0.6, 1.0));
+    list[2] = new sphere(vec3(1,0,-1), 0.5, new material(vec3(0.8, 0.6, 0.2), 0.2, 0.5, 0.9, 1.0));
     list[3] = new sphere(vec3(-1,0,-1), 0.5, new material(vec3(0.8, 0.8, 0.8), 0.2, 0.5, 0.6, 1.0));
     hitable *world = new hitable_list(list,4);
     camera cam;

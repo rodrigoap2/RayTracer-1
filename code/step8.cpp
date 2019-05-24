@@ -3,7 +3,7 @@
 #include "lib/sphere.h"
 #include "lib/hitable_list.h"
 #include "lib/camera.h"
-#include "lib/material.h"
+#include "lib/oldmaterial.h"
 #include "float.h"
 
 vec3 color(const ray& r, hitable *world, int depth) {
