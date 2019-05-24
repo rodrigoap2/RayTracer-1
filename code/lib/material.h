@@ -7,50 +7,57 @@ struct hit_record;
 #include "hitable.h"
 
 
-vec3 random_in_unit_sphere() {
-    vec3 p;
-    do {
-        p = 2.0*vec3(drand48(), drand48(), drand48()) - vec3(1,1,1);
-    } while (p.squared_length() >= 1.0);
-    return p;
+class material {
+    public:
+        material() {}
+        material(vec3 c, float a, float d, float s, float al) : color(c), ka(a), ks(s), kd(d), alpha(al) {}
+
+        vec3 color;
+        float ka;
+        float ks;
+        float kd;
+        float alpha;
+};
+
+class materialLight {
+    public:
+        materialLight() {}
+        materialLight(vec3 cor, vec3 dir) : color(cor), direction(dir) {}
+
+        vec3 color;
+        vec3 direction;
+};
+
+inline float max(float a, float b) {
+    if(a > b) return a;
+    return b;
 }
 
 vec3 reflect(const vec3 &v, const vec3 &n) {
     return v- 2*dot(v,n)*n;
 }
 
-class material {
-    public:
-        virtual bool scatter(const ray &r_in, const hit_record &rec, vec3 &attenuation, ray& scattered) const = 0;
-};
+vec3 phong(materialLight& light, const hit_record& rec, const camera& view) {
+    vec3 lightDirection = normalize(light.direction);
+    vec3 viewDirection = normalize(view.origin - rec.p);
 
-class lambertian : public material {
-    public:
-        lambertian (const vec3 &a) : albedo(a) {}
-        virtual bool scatter(const ray& r_in, const hit_record& rec, vec3& attenuation, ray& scattered) const {
-            vec3 target = rec.p + rec.normal + random_in_unit_sphere();
-            scattered = ray(rec.p, target-rec.p);
-            attenuation = albedo;
-            return true;
-        }
+    float cosTheta = max(0.0, dot(rec.normal, lightDirection));
 
-        vec3 albedo;
-};
+    //cores
+    vec3 ka = rec.mat_ptr->ka*light.color;
+    vec3 kd = rec.mat_ptr->kd*light.color;
+    vec3 ks = rec.mat_ptr->ks*light.color;
 
-class metal : public material {
-    public:
-        metal(const vec3& a, float f) : albedo(a) {
-            if(f < 1) fuzz = f;
-            else fuzz = 1;
-        }
-        virtual bool scatter(const ray& r_in, const hit_record& rec, vec3& attenuation, ray& scattered) const {
-            vec3 reflected = reflect(unit_vector(r_in.direction()), rec.normal);
-            scattered = ray(rec.p, reflected + fuzz*random_in_unit_sphere());
-            attenuation = albedo;
-            return (dot(scattered.direction(), rec.normal) > 0);
-        }
-        vec3 albedo;
-        float fuzz;
-};
+    vec3 ambient = rec.mat_ptr->ka*light.color;
+    vec3 diffuse = vec3(0.0, 0.0, 0.0);
+    vec3 specular = vec3(0.0, 0.0, 0.0);
 
+    if(cosTheta > 0.0) {
+        vec3 relfectionDir = reflect(-lightDirection, rec.normal);
+        diffuse = rec.mat_ptr->kd * light.color * cosTheta;
+        specular = rec.mat_ptr->ks * light.color * pow(max(0.0, dot(relfectionDir, rec.normal)), 128.0);
+    }
+
+    return ambient + diffuse + specular;
+}
 #endif
