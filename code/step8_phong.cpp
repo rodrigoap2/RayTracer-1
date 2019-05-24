@@ -15,31 +15,30 @@ vec3 color(const ray& r, const hitable *world, const materialLight& light, const
         if(world->hit(ray(rec.p, light.position-rec.p), 0.001, FLT_MAX, hitted)) {
             vec3 unit_direction = unit_vector(r.direction());
             float t = 0.5*(unit_direction.y()+1.0);
-            return (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
+            //return (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
             return vec3(0.0, 0.0, 0.0);
         }
         return phong(light, rec, view);
     }
     vec3 unit_direction = unit_vector(r.direction());
     float t = 0.5*(unit_direction.y()+1.0);
-    return (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
+    //return (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
     return vec3(0.0, 0.0, 0.0);
 }
 
 int main() {
-    int nx = 400;
-    int ny = 200;
-    int ns = 1;
+    int nx = 500;
+    int ny = 250;
+    int ns = 50;
     printf("P3\n%i %i\n255\n", nx, ny);
-    hitable *list[5];
-    list[0] = new sphere(vec3(0, 0, -1), 0.5, new material(vec3(0.8, 0.3, 0.3), 0.2, 0.5, 0.6, 1.0));
+    hitable *list[4];
+    list[0] = new sphere(vec3(0, 0.2, -1), 0.5, new material(vec3(0.8, 0.3, 0.3), 0.2, 0.5, 0.6, 0.4));
     list[1] = new sphere(vec3(0.0,-100.5,-1.0), 100, new material(vec3(0.8, 0.8, 0.0), 0.2, 0.5, 0.6, 1.0));
-    list[2] = new sphere(vec3(1,0,-1), 0.5, new material(vec3(0.8, 0.6, 0.2), 0.2, 0.5, 0.9, 1.0));
-    list[3] = new sphere(vec3(-1,0,-1), 0.5, new material(vec3(0.8, 0.8, 0.8), 0.2, 0.5, 0.6, 1.0));
-    list[4] = new sphere(vec3(0,0,0), 5000.0, new material(vec3(0.8, 0.8, 0.8), 0.2, 0.5, 0.6, 1.0));
-    hitable *world = new hitable_list(list,5);
+    list[2] = new sphere(vec3(1,0.2,-1), 0.5, new material(vec3(0.8, 0.6, 0.2), 0.2, 0.5, 0.9, 1.0));
+    list[3] = new sphere(vec3(-1,0.2,-1), 0.5, new material(vec3(0.8, 0.8, 0.8), 0.2, 0.5, 0.6, 1.0));
+    hitable *world = new hitable_list(list,4);
     camera cam;
-    materialLight light(vec3(1.0, 1.0, 1.0), vec3(1.0, 60.0, -1.0));
+    materialLight light(vec3(1.0, 1.0, 1.0), vec3(1.0, 790.0, -1.0));
     for(int i = ny-1; i > -1; i--) {
         for(int j = 0; j < nx; j++) {
             vec3 col(0,0,0);

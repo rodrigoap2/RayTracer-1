@@ -36,7 +36,7 @@ inline float max(float a, float b) {
 }
 
 vec3 reflect(const vec3 &v, const vec3 &n) {
-    return v - 2*dot(v,n)*n;
+    return 2*dot(v,n)*n - v;
 }
 
 vec3 phong(materialLight light, const hit_record& rec, const camera& view) {
