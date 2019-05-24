@@ -3,15 +3,15 @@ Parte Básica (7 pts)
 Deverá ser lido um arquivo de descrição de cena (a ser criado pelo grupo) contendo informações da câmera e das superfícies (geometria e materiais). O modelo de iluminação a ser usado é o de Phong.
 
 Uma câmera deve ter (ao menos) os seguintes parâmetros:
-Field of View (fov)
-Posição (pos)
-Ponto de Mira (target)
-Vetor que aponta a orientação (up)
-Distância para o plano de imagem (f)
+✓ Field of View (fov)
+✓ Posição (pos)
+✓ Ponto de Mira (target)
+✓ Vetor que aponta a orientação (up)
+✓ Distância para o plano de imagem (f)
 
 Os materiais devem ter (ao menos) os seguintes parâmetros:
-Fator Emissivo (Ke)
-Fator Difuso (Kd)
-Fator Especular (Ks)
-Coeficiente de Rugosidade (alpha) 
-Cor (c)
+✓ Fator Emissivo (Ke)
+✓ Fator Difuso (Kd)
+✓ Fator Especular (Ks)
+✓ Coeficiente de Rugosidade (alpha) 
+✓ Cor (c)
