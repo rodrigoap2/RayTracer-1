@@ -54,9 +54,12 @@ vec3 phong(materialLight light, const hit_record& rec, const camera& view) {
 
     if(cosTheta > 0.0) {
         diffuse = rec.mat_ptr->kd * rec.mat_ptr->color * light.color * cosTheta;
-        specular = rec.mat_ptr->ks * rec.mat_ptr->color * light.color * pow(max(0.0, dot(viewDirection, relfectionDir)), 128.0);
+        specular = rec.mat_ptr->ks * rec.mat_ptr->color * light.color * pow(max(0.0, dot(viewDirection, relfectionDir)), rec.mat_ptr->alpha*128.0);
     }
 
+    //return specular;
+    //return diffuse;
+    //return emissive;
     return emissive + diffuse + specular;
 }
 #endif
