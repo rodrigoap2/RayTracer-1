@@ -31,7 +31,7 @@ int main() {
     list[3] = new sphere(vec3(-1,0,-1), 0.5, new material(vec3(0.8, 0.8, 0.8), 0.2, 0.5, 0.6, 1.0));
     hitable *world = new hitable_list(list,4);
     camera cam;
-    materialLight light(vec3(1.0, 1.0, 1.0), vec3(1.0, 100.0, -1.0));
+    materialLight light(vec3(1.0, 1.0, 1.0), vec3(1.0, 1000.0, -1.0));
     for(int i = ny-1; i > -1; i--) {
         for(int j = 0; j < nx; j++) {
             vec3 col(0,0,0);
