@@ -40,9 +40,9 @@ vec3 reflect(const vec3 &v, const vec3 &n) {
 }
 
 vec3 phong(materialLight light, const hit_record& rec, const camera& view) {
-    vec3 lightDirection = normalize(light.position - rec.p);
-    vec3 viewDirection = normalize(view.origin - rec.p);
-    vec3 normaNormal = normalize(rec.normal);
+    vec3 lightDirection = unit_vector(light.position - rec.p);
+    vec3 viewDirection = unit_vector(view.origin - rec.p);
+    vec3 normaNormal = unit_vector(rec.normal);
 
     float cosTheta = max(0.0f, dot(normaNormal, lightDirection));
 

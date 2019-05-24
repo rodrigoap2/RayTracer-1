@@ -29,7 +29,7 @@ vec3 color(const ray& r, const hitable *world, const materialLight& light, const
 int main() {
     int nx = 1000;
     int ny = 500;
-    int ns = 5;
+    int ns = 50;
     printf("P3\n%i %i\n255\n", nx, ny);
     hitable *list[3];
     float R = cos(M_PI/4.0);

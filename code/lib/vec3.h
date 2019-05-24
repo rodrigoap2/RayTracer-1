@@ -50,11 +50,6 @@ public:
     float e[3];
 };
 
-inline vec3 normalize(vec3 v) {
-    float k = 1.0/sqrt(v.e[0]*v.e[0] + v.e[1]*v.e[1] + v.e[2]*v.e[2]);
-    return vec3(v.e[0]*k, v.e[1]*k, v.e[2]*k);
-}
-
 inline std::istream& operator>>(std::istream &is, vec3 &t) {
     is >> t.e[0] >> t.e[1] >> t.e[2];
     return is;
