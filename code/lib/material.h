@@ -22,10 +22,10 @@ class material {
 class materialLight {
     public:
         materialLight() {}
-        materialLight(vec3 cor, vec3 dir) : color(cor), direction(dir) {}
+        materialLight(vec3 cor, vec3 dir) : color(cor), position(dir) {}
 
         vec3 color;
-        vec3 direction;
+        vec3 position;
 };
 
 inline float max(float a, float b) {
@@ -38,10 +38,11 @@ vec3 reflect(const vec3 &v, const vec3 &n) {
 }
 
 vec3 phong(materialLight& light, const hit_record& rec, const camera& view) {
-    vec3 lightDirection = normalize(light.direction);
+    vec3 lightDirection = normalize(light.position - rec.p);
     vec3 viewDirection = normalize(view.origin - rec.p);
+    vec3 normaNormal = normalize(rec.normal);
 
-    float cosTheta = max(0.0, dot(rec.normal, lightDirection));
+    float cosTheta = max(0.0, dot(normaNormal, lightDirection));
 
     //cores
     vec3 ka = rec.mat_ptr->ka*light.color;
@@ -53,9 +54,9 @@ vec3 phong(materialLight& light, const hit_record& rec, const camera& view) {
     vec3 specular = vec3(0.0, 0.0, 0.0);
 
     if(cosTheta > 0.0) {
-        vec3 relfectionDir = reflect(-lightDirection, rec.normal);
+        vec3 relfectionDir = reflect(-lightDirection, normaNormal);
         diffuse = rec.mat_ptr->kd * light.color * cosTheta;
-        specular = rec.mat_ptr->ks * light.color * pow(max(0.0, dot(relfectionDir, rec.normal)), 128.0);
+        specular = rec.mat_ptr->ks * light.color * pow(max(0.0, dot(relfectionDir, normaNormal)), 128.0);
     }
 
     return ambient + diffuse + specular;

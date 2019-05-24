@@ -10,13 +10,14 @@ vec3 color(const ray& r, hitable *world, int depth, materialLight& light, camera
     hit_record rec;
     if(world->hit(r, 0.001, FLT_MAX, rec)) {
         hit_record hitted;
-        if(!world->hit(ray(rec.p, light.direction-rec.p), 0.001, FLT_MAX, hitted)) {
+        if(!world->hit(ray(rec.p, light.position-rec.p), 0.001, FLT_MAX, hitted)) {
             return phong(light, rec, view);
         }
     }
     vec3 unit_direction = unit_vector(r.direction());
     float t = 0.5*(unit_direction.y()+1.0);
     return (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
+    //return vec3(0.0, 0.0, 0.0);
 }
 
 int main() {
