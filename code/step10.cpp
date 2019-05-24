@@ -31,13 +31,14 @@ int main() {
     int ny = 250;
     int ns = 50;
     printf("P3\n%i %i\n255\n", nx, ny);
-    hitable *list[2];
+    hitable *list[3];
     float R = cos(M_PI/4.0);
-    list[0] = new sphere(vec3(-R, 0, -1), R, new material(vec3(0.8, 0.3, 0.3), 0.2, 0.5, 0.6, 0.4));
-    list[1] = new sphere(vec3(R,0,-1.0), R, new material(vec3(0.8, 0.8, 0.0), 0.2, 0.5, 0.6, 1.0));
-    hitable *world = new hitable_list(list,2);
-    camera cam(90, float(nx)/float(ny));
-    materialLight light(vec3(1.0, 1.0, 1.0), vec3(1.0, 10000.0, -1.0));
+    list[0] = new sphere(vec3(-R, 1, -1), R, new material(vec3(0.8, 0.3, 0.3), 0.2, 0.5, 0.6, 0.4));
+    list[1] = new sphere(vec3(R,1,-1.0), R, new material(vec3(0.8, 0.8, 0.0), 0.2, 0.5, 0.6, 1.0));
+    list[2] = new sphere(vec3(R,-100.5,-1.0), 100, new material(vec3(1, 1, 1), 0.2, 0.5, 0.6, 1.0));
+    hitable *world = new hitable_list(list,3);
+    camera cam(vec3(R+5,5,-1+5), vec3(R,0,-1), vec3(0,1,0), 30, float(nx)/float(ny));
+    materialLight light(vec3(1.0, 1.0, 1.0), vec3(1.0, 1000.0, -1.0));
     for(int i = ny-1; i > -1; i--) {
         for(int j = 0; j < nx; j++) {
             vec3 col(0,0,0);
