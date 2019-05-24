@@ -12,11 +12,10 @@ using namespace std;
 class material {
     public:
         material() {}
-        material(vec3 c, float a, float d, float s, float al) : color(c), ka(a), ks(s), kd(d), alpha(al) {}
+        material(vec3 c, float e, float d, float s, float al) : color(c), ke(e), ks(s), kd(d), alpha(al) {}
 
         vec3 color;
         float ke;
-        float ka;
         float ks;
         float kd;
         float alpha;
@@ -41,8 +40,6 @@ vec3 reflect(const vec3 &v, const vec3 &n) {
 }
 
 vec3 phong(materialLight light, const hit_record& rec, const camera& view) {
-    vec3 esf = rec.mat_ptr->color;
-    //cerr << esf.e[0] << " " << esf.e[1] << " " << esf.e[2] << "\n";
     vec3 lightDirection = normalize(light.position - rec.p);
     vec3 viewDirection = normalize(view.origin - rec.p);
     vec3 normaNormal = normalize(rec.normal);
@@ -50,7 +47,7 @@ vec3 phong(materialLight light, const hit_record& rec, const camera& view) {
     float cosTheta = max(0.0f, dot(normaNormal, lightDirection));
 
     //cores
-    vec3 ambient = rec.mat_ptr->ka*rec.mat_ptr->color*light.color;
+    vec3 emissive = rec.mat_ptr->ke*rec.mat_ptr->color*light.color;
     vec3 diffuse = vec3(0.0, 0.0, 0.0);
     vec3 specular = vec3(0.0, 0.0, 0.0);
     vec3 relfectionDir = reflect(lightDirection, normaNormal);
@@ -60,6 +57,6 @@ vec3 phong(materialLight light, const hit_record& rec, const camera& view) {
         specular = rec.mat_ptr->ks * rec.mat_ptr->color * light.color * pow(max(0.0, dot(viewDirection, relfectionDir)), 128.0);
     }
 
-    return ambient + diffuse + specular;
+    return emissive + diffuse + specular;
 }
 #endif
